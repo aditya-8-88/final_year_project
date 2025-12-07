@@ -1,11 +1,32 @@
 [build]
   publish = "build/web"
-  command = "chmod +x netlify-build.sh && ./netlify-build.sh"
+  command = "bash netlify-build.sh"
 
 [build.environment]
   FLUTTER_VERSION = "3.38.4"
+  NODE_VERSION = "18"
 
+# SPA redirect - all routes go to index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Headers for better performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
