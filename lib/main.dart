@@ -27,7 +27,7 @@ class WomenSafetyApp extends StatelessWidget {
           secondary: const Color(0xFF455A64),
           brightness: Brightness.light,
         ),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           elevation: 1,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           color: Colors.white,
