@@ -1,6 +1,7 @@
 # Women Safety & Legal Awareness App
 
-A comprehensive Flutter web application designed to educate women about their legal rights, provide access to real case studies with official sources, and offer emergency assistance features. This is a B.Tech final year project from GLBITM.
+A comprehensive Flutter web application designed to educate women about their legal rights, provide access to real case studies with official sources, and offer emergency assistance features.  
+Website Link: https://womensafetyandlegalawareness.netlify.app/
 
 ## 🎯 Project Overview
 
