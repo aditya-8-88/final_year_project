@@ -1,0 +1,11 @@
+[build]
+  publish = "build/web"
+  command = "chmod +x netlify-build.sh && ./netlify-build.sh"
+
+[build.environment]
+  FLUTTER_VERSION = "3.38.4"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
