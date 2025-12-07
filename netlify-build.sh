@@ -41,7 +41,7 @@ flutter config --enable-web
 
 # Build web app
 echo "Building Flutter web app for production..."
-flutter build web --release --web-renderer canvaskit
+flutter build web --release
 
 # Verify build output
 echo "Verifying build output..."
