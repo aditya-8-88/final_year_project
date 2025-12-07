@@ -5,13 +5,19 @@ echo "========================================="
 echo "Starting Flutter Web Build"
 echo "========================================="
 
+# Set Flutter installation directory (writable location in Netlify)
+FLUTTER_HOME="$HOME/flutter"
+
 # Install Flutter
 echo "Installing Flutter SDK..."
-if [ ! -d "/opt/flutter" ]; then
-    git clone https://github.com/flutter/flutter.git -b stable --depth 1 /opt/flutter
+if [ ! -d "$FLUTTER_HOME" ]; then
+    echo "Cloning Flutter repository..."
+    git clone https://github.com/flutter/flutter.git -b stable --depth 1 $FLUTTER_HOME
+else
+    echo "Flutter already exists, skipping clone..."
 fi
 
-export PATH="$PATH:/opt/flutter/bin"
+export PATH="$PATH:$FLUTTER_HOME/bin"
 
 # Pre-download Dart SDK
 echo "Downloading Dart SDK..."
@@ -27,7 +33,6 @@ yes | flutter doctor --android-licenses 2>/dev/null || true
 
 # Get dependencies
 echo "Getting Flutter dependencies..."
-cd $DEPLOY_PRIME_PATH
 flutter pub get
 
 # Enable web
