@@ -9,6 +9,13 @@ This application addresses a critical gap: **70% of women don't report crimes be
 
 ## ✨ Key Features
 
+### AI Chat Assistant (New)
+- Global bottom-right chatbot available across all screens
+- Secure server-side model calls via Netlify Functions (`/api/chat`)
+- Multi-provider routing with fallback (`Gemini` and `NVIDIA`)
+- Safety-first responses with emergency escalation and source citations
+- See [CHATBOT_SETUP.md](CHATBOT_SETUP.md) for environment setup and API contract
+
 ### 📚 Educational Content
 - **8 Comprehensive Case Studies**: Detailed analysis of landmark cases (Nirbhaya 2012, Vishaka 1997, Mathura 1972, etc.) with 500+ words each
 - **Official Statistics**: NCRB 2021 data, WHO statistics, and UN Women reports
