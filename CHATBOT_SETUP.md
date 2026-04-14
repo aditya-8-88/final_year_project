@@ -130,3 +130,39 @@ This is required because non-web targets cannot use a relative URL like `/api/ch
 - Citations open source links
 - Emergency-style query returns urgent helpline-first guidance
 - No provider keys are present in Flutter code or web build output
+
+## 8) Local CLI Checks Before Push
+
+Fast path (recommended):
+1. Run from project root:
+  - ./pre_push_checks.sh
+
+This script validates Flutter and Node availability, then runs analyze, tests, web build, and Netlify function syntax check.
+
+If your terminal shows "command not found" for Flutter or Node, install them first.
+
+### One-time install on macOS (Homebrew)
+1. Install Flutter:
+  - brew install --cask flutter
+2. Install Node 18 (matches .nvmrc):
+  - brew install node@18
+3. Add Node 18 to PATH:
+  - echo 'export PATH="/opt/homebrew/opt/node@18/bin:$PATH"' >> ~/.zshrc
+  - source ~/.zshrc
+4. Verify:
+  - flutter --version
+  - node -v
+  - npm -v
+
+### Run checks in project root
+1. flutter clean
+2. flutter pub get
+3. flutter analyze
+4. flutter test
+5. flutter build web --release
+6. node --check netlify/functions/chat.js
+
+### Optional: Netlify function smoke test locally
+1. npm install -g netlify-cli
+2. netlify dev
+3. Open http://localhost:8888 and send one chat message in app UI.
