@@ -21,6 +21,28 @@ Set these in Netlify site settings:
 - `NVIDIA_MODEL` (default: `meta/llama-3.1-70b-instruct`)
 - `NVIDIA_BASE_URL` (default: `https://integrate.api.nvidia.com`)
 
+### Recommended (both providers + Gemini default)
+- `GEMINI_API_KEY=<your gemini key>`
+- `NVIDIA_API_KEY=<your nvidia key>`
+- `CHAT_PROVIDER_DEFAULT=gemini`
+
+### Exact steps in Netlify UI
+1. Open Netlify dashboard and choose your site.
+2. Go to **Site configuration**.
+3. Open **Environment variables**.
+4. Click **Add a variable**.
+5. Add these one by one:
+  - `GEMINI_API_KEY`
+  - `NVIDIA_API_KEY`
+  - `CHAT_PROVIDER_DEFAULT` with value `gemini`
+6. Save variables.
+7. Trigger a fresh deploy from **Deploys** -> **Trigger deploy** -> **Deploy site**.
+
+### Important notes
+- Do not put API keys in Flutter code or repository files.
+- If Gemini hits quota or fails, backend auto-falls back to NVIDIA (when `NVIDIA_API_KEY` is set).
+- If NVIDIA model access differs in your account, set `NVIDIA_MODEL` explicitly to a model available to your key.
+
 ## 2) Netlify Routing
 
 `netlify.toml` now contains:
