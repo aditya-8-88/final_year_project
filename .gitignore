@@ -48,6 +48,10 @@ app.*.map.json
 *.simple_backup
 *.broken
 
+# Local secrets
+.env
+.env.*
+
 # Windows specific
 Thumbs.db
 desktop.ini
