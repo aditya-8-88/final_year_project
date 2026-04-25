@@ -4,7 +4,6 @@ import '../config/theme.dart';
 import '../screens/home_screen.dart';
 import '../screens/constitution_explorer_screen.dart';
 import '../screens/laws_screen.dart';
-import '../screens/chatbot_screen.dart';
 import '../screens/chat_sessions_screen.dart';
 import '../screens/search_screen.dart';
 import '../screens/bookmarks_screen.dart';
@@ -35,11 +34,11 @@ class ResponsiveScaffoldState extends State<ResponsiveScaffold> {
       case 0:
         return const HomeScreen();
       case 1:
-        return const ConstitutionExplorerScreen();
+        return const ConstitutionExplorerScreen(showAppBar: false);
       case 2:
-        return const LawsScreen();
+        return const LawsScreen(showAppBar: false);
       case 3:
-        return const ChatSessionsScreen();
+        return const ChatSessionsScreen(showAppBar: false);
       default:
         return const HomeScreen();
     }

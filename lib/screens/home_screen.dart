@@ -7,7 +7,6 @@ import '../data/laws_data.dart';
 import '../data/glossary_data.dart';
 import 'constitution_explorer_screen.dart';
 import 'laws_screen.dart';
-import 'chatbot_screen.dart';
 import 'landmark_cases_screen.dart';
 
 import 'amendments_screen.dart';
@@ -40,6 +39,14 @@ class HomeScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final width = MediaQuery.of(context).size.width;
     final crossAxisCount = width > 1200 ? 4 : (width > 800 ? 3 : 2);
+    final textScale = MediaQuery.textScalerOf(context).scale(1.0);
+    final quickAccessAspectRatio = width > 1200
+      ? 1.45
+      : width > 900
+        ? 1.2
+        : width > 600
+          ? 1.0
+          : (textScale > 1.1 ? 0.78 : 0.88);
 
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
@@ -161,7 +168,7 @@ class HomeScreen extends StatelessWidget {
                 physics: const NeverScrollableScrollPhysics(),
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 1.5,
+                childAspectRatio: quickAccessAspectRatio,
                 children: [
                   _QuickAccessCard(
                     icon: Icons.menu_book,
@@ -475,30 +482,58 @@ class HomeScreen extends StatelessWidget {
       {'icon': Icons.phone_in_talk, 'title': 'Helpline: 181', 'subtitle': 'Women helpline (24/7)'},
     ];
     return [
-      Wrap(
-        spacing: 8,
-        runSpacing: 8,
-        children: highlights.map((h) => SizedBox(
-          width: (MediaQuery.of(context).size.width - 64) / 3,
-          child: Card(
-            child: InkWell(
-              onTap: () => _showWomensLaws(context),
-              borderRadius: BorderRadius.circular(12),
-              child: Padding(
-                padding: const EdgeInsets.all(12),
-                child: Column(
-                  children: [
-                    Icon(h['icon'] as IconData, color: Colors.pink, size: 24),
-                    const SizedBox(height: 8),
-                    Text(h['title'] as String, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12), textAlign: TextAlign.center),
-                    const SizedBox(height: 4),
-                    Text(h['subtitle'] as String, style: TextStyle(fontSize: 10, color: theme.textTheme.bodySmall?.color), textAlign: TextAlign.center),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        )).toList(),
+      LayoutBuilder(
+        builder: (context, constraints) {
+          final cardsPerRow = constraints.maxWidth < 520 ? 2 : 3;
+          final itemWidth =
+              (constraints.maxWidth - ((cardsPerRow - 1) * 8)) / cardsPerRow;
+
+          return Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: highlights
+                .map((h) => SizedBox(
+                      width: itemWidth,
+                      child: Card(
+                        child: InkWell(
+                          onTap: () => _showWomensLaws(context),
+                          borderRadius: BorderRadius.circular(12),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              children: [
+                                Icon(h['icon'] as IconData,
+                                    color: Colors.pink, size: 24),
+                                const SizedBox(height: 8),
+                                Text(
+                                  h['title'] as String,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  h['subtitle'] as String,
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      color:
+                                          theme.textTheme.bodySmall?.color),
+                                  textAlign: TextAlign.center,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ))
+                .toList(),
+          );
+        },
       ),
       const SizedBox(height: 8),
       Align(
@@ -645,49 +680,59 @@ class _QuickAccessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: color.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(icon, color: color, size: 28),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 175;
+
+        return Card(
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(12),
+            child: Padding(
+              padding: EdgeInsets.all(compact ? 12 : 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(compact ? 8 : 10),
+                    decoration: BoxDecoration(
+                      color: color.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Icon(icon, color: color, size: compact ? 24 : 28),
+                  ),
+                  SizedBox(height: compact ? 8 : 10),
+                  Text(
+                    title,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: compact ? 13 : 14,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: TextStyle(
+                      fontSize: compact ? 10 : 11,
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.color
+                          ?.withOpacity(0.7),
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 11,
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.color
-                      ?.withOpacity(0.7),
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }
