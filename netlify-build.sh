@@ -39,9 +39,12 @@ flutter pub get
 echo "Enabling Flutter web..."
 flutter config --enable-web
 
-# Build web app
+# Build web app with environment variables
 echo "Building Flutter web app for production..."
-flutter build web --release
+DART_DEFINES=""
+[ -n "$GITHUB_TOKEN" ] && DART_DEFINES="$DART_DEFINES --dart-define=GITHUB_TOKEN=$GITHUB_TOKEN"
+[ -n "$CHAT_PROVIDER_DEFAULT" ] && DART_DEFINES="$DART_DEFINES --dart-define=CHAT_PROVIDER_DEFAULT=$CHAT_PROVIDER_DEFAULT"
+flutter build web --release $DART_DEFINES
 
 # Verify build output
 echo "Verifying build output..."
