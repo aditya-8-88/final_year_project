@@ -48,7 +48,7 @@ app.*.map.json
 *.simple_backup
 *.broken
 
-# Local secrets
+# Environment variables
 .env
 .env.*
 

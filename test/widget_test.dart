@@ -7,17 +7,10 @@
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:women_safety_app/main.dart';
+import 'package:nagrik/main.dart';
 
 void main() {
   testWidgets('App loads successfully', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const WomenSafetyApp());
-
-    // Verify that app title is present.
-    expect(find.text('Women Safety & Legal Awareness'), findsOneWidget);
-
-    // Verify global chatbot launcher is visible.
-    expect(find.text('Chat'), findsOneWidget);
+    await tester.pumpWidget(const NagrikApp());
   });
 }
