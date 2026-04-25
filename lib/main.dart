@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'comprehensive_data.dart';
 import 'case_studies_data.dart';
+import 'chat/chat_overlay.dart';
 
 void main() {
   runApp(const WomenSafetyApp());
@@ -18,6 +19,11 @@ class WomenSafetyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Women Safety & Legal Awareness',
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return GlobalChatShell(
+          child: child ?? const SizedBox.shrink(),
+        );
+      },
       theme: ThemeData(
         primaryColor: const Color(0xFF1A237E),
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
@@ -232,7 +238,7 @@ class AwarenessHomePage extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: color, size: 28),
@@ -547,7 +553,7 @@ class StatisticsPage extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1A237E).withOpacity(0.1),
+                            color: const Color(0xFF1A237E).withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: const Icon(Icons.bar_chart, color: Color(0xFF1A237E), size: 32),
@@ -563,7 +569,7 @@ class StatisticsPage extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A237E).withOpacity(0.05),
+                        color: const Color(0xFF1A237E).withValues(alpha: 0.05),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
@@ -1742,7 +1748,7 @@ class HelplinePage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.1),
+                    color: color.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(icon, color: color),
@@ -2020,7 +2026,7 @@ class _ReportIncidentPageState extends State<ReportIncidentPage> {
             ),
             const SizedBox(height: 24),
             DropdownButtonFormField<String>(
-              value: _incidentType,
+              initialValue: _incidentType,
               decoration: const InputDecoration(
                 labelText: 'Incident Type',
                 border: OutlineInputBorder(),
