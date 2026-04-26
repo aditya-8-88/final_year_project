@@ -5,7 +5,9 @@ import '../widgets/article_card.dart';
 import 'article_detail_screen.dart';
 
 class ConstitutionExplorerScreen extends StatefulWidget {
-  const ConstitutionExplorerScreen({super.key});
+  final bool showAppBar;
+
+  const ConstitutionExplorerScreen({super.key, this.showAppBar = true});
 
   @override
   State<ConstitutionExplorerScreen> createState() =>
@@ -38,15 +40,21 @@ class _ConstitutionExplorerScreenState
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final width = MediaQuery.of(context).size.width;
+    final isCompact = width < 400;
     final articles = _filteredArticles;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Constitution Explorer')),
+      appBar:
+          widget.showAppBar ? AppBar(title: const Text('Constitution Explorer')) : null,
       body: Column(
         children: [
           // Search and Filter Bar
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.symmetric(
+              horizontal: isCompact ? 12 : 16,
+              vertical: isCompact ? 12 : 16,
+            ),
             decoration: BoxDecoration(
               color: theme.colorScheme.surface,
               boxShadow: [
@@ -64,6 +72,11 @@ class _ConstitutionExplorerScreenState
                   decoration: InputDecoration(
                     hintText: 'Search articles, rights, keywords...',
                     prefixIcon: const Icon(Icons.search),
+                    isDense: isCompact,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: isCompact ? 10 : 14,
+                    ),
                     suffixIcon: _searchQuery.isNotEmpty
                         ? IconButton(
                             icon: const Icon(Icons.clear),
@@ -73,25 +86,26 @@ class _ConstitutionExplorerScreenState
                         : null,
                   ),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: isCompact ? 8 : 12),
                 SizedBox(
-                  height: 38,
-                  child: ListView(
+                  height: isCompact ? 34 : 38,
+                  child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    children: [
-                      _FilterChip(
-                        label: 'All Parts',
-                        selected: _selectedPart == null,
-                        onTap: () =>
-                            setState(() => _selectedPart = null),
-                      ),
-                      ...constitutionParts.map((part) => _FilterChip(
-                            label: part.partNumber,
-                            selected: _selectedPart == part.partNumber,
-                            onTap: () => setState(
-                                () => _selectedPart = part.partNumber),
-                          )),
-                    ],
+                    child: Row(
+                      children: [
+                        _FilterChip(
+                          label: 'All Parts',
+                          selected: _selectedPart == null,
+                          onTap: () => setState(() => _selectedPart = null),
+                        ),
+                        ...constitutionParts.map((part) => _FilterChip(
+                              label: part.partNumber,
+                              selected: _selectedPart == part.partNumber,
+                              onTap: () =>
+                                  setState(() => _selectedPart = part.partNumber),
+                            )),
+                      ],
+                    ),
                   ),
                 ),
               ],
@@ -100,7 +114,10 @@ class _ConstitutionExplorerScreenState
 
           // Results count
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: isCompact ? 4 : 8,
+            ),
             child: Row(
               children: [
                 Text(
@@ -127,12 +144,16 @@ class _ConstitutionExplorerScreenState
               child: Card(
                 color: theme.colorScheme.primary.withOpacity(0.05),
                 child: ListTile(
+                  dense: isCompact,
                   leading: Icon(Icons.auto_stories,
                       color: theme.colorScheme.primary),
                   title: const Text('The Preamble',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                   subtitle: const Text(
-                      'The soul of the Constitution - read the full text and meaning'),
+                    'The soul of the Constitution - read the full text and meaning',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () => _showPreamble(context),
                 ),
