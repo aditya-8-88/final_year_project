@@ -6,7 +6,9 @@ import '../widgets/article_card.dart';
 import 'chatbot_screen.dart';
 
 class LawsScreen extends StatefulWidget {
-  const LawsScreen({super.key});
+  final bool showAppBar;
+
+  const LawsScreen({super.key, this.showAppBar = true});
 
   @override
   State<LawsScreen> createState() => _LawsScreenState();
@@ -20,7 +22,7 @@ class _LawsScreenState extends State<LawsScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Laws & Acts')),
+      appBar: widget.showAppBar ? AppBar(title: const Text('Laws & Acts')) : null,
       body: Column(
         children: [
           Padding(

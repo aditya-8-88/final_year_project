@@ -3,7 +3,9 @@ import '../services/session_cache.dart';
 import 'chatbot_screen.dart';
 
 class ChatSessionsScreen extends StatefulWidget {
-  const ChatSessionsScreen({super.key});
+  final bool showAppBar;
+
+  const ChatSessionsScreen({super.key, this.showAppBar = true});
 
   @override
   State<ChatSessionsScreen> createState() => _ChatSessionsScreenState();
@@ -40,9 +42,11 @@ class _ChatSessionsScreenState extends State<ChatSessionsScreen> {
     final sessions = SessionCache.chatSessions;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Assistant'),
-      ),
+      appBar: widget.showAppBar
+          ? AppBar(
+              title: const Text('AI Assistant'),
+            )
+          : null,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _startNewChat,
         icon: const Icon(Icons.add),
