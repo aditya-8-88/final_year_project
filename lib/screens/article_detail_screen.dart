@@ -22,18 +22,25 @@ class _ArticleDetailScreenState extends State<ArticleDetailScreen> {
   }
 
   Future<void> _checkBookmark() async {
-    final bookmarked =
-        await StorageService.isBookmarked('art_${widget.article.articleNumber}');
+    final canonicalId = 'article_${widget.article.articleNumber}';
+    final legacyId = 'art_${widget.article.articleNumber}';
+    final bookmarked = await StorageService.isBookmarked(canonicalId) ||
+        await StorageService.isBookmarked(legacyId);
     if (mounted) setState(() => _isBookmarked = bookmarked);
   }
 
   Future<void> _toggleBookmark() async {
-    final id = 'art_${widget.article.articleNumber}';
+    final canonicalId = 'article_${widget.article.articleNumber}';
+    final legacyId = 'art_${widget.article.articleNumber}';
+
     if (_isBookmarked) {
-      await StorageService.removeBookmark(id);
+      await StorageService.removeBookmark(canonicalId);
+      await StorageService.removeBookmark(legacyId);
     } else {
+      // Clean any legacy entry so users don't get duplicate article bookmarks.
+      await StorageService.removeBookmark(legacyId);
       await StorageService.addBookmark(Bookmark(
-        id: id,
+        id: canonicalId,
         title: 'Article ${widget.article.articleNumber}',
         type: 'article',
         subtitle: widget.article.title,
