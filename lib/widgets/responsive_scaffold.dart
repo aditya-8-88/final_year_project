@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../config/constants.dart';
 import '../config/theme.dart';
 import '../screens/home_screen.dart';
+import '../screens/sos_screen.dart';
 import '../screens/constitution_explorer_screen.dart';
 import '../screens/laws_screen.dart';
 import '../screens/chat_sessions_screen.dart';
@@ -187,6 +188,21 @@ class ResponsiveScaffoldState extends State<ResponsiveScaffold> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'sos_fab',
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => const SosScreen()),
+        ),
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+        icon: const Icon(Icons.emergency_rounded),
+        label: const Text(
+          'SOS',
+          style: TextStyle(fontWeight: FontWeight.w900, letterSpacing: 1.5),
+        ),
+        tooltip: 'SOS Emergency Alert',
       ),
       bottomNavigationBar: (!isWide && !isMedium)
           ? NavigationBar(
