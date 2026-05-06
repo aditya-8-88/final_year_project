@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../services/sos_service.dart';
 import '../config/constants.dart';
@@ -69,7 +70,7 @@ class _SosScreenState extends State<SosScreen> with TickerProviderStateMixin {
         content: Text(
           _contacts.isEmpty
               ? 'No emergency contacts added yet. Add contacts first.'
-              : 'This will open your SMS app with ${_contacts.length} contact${_contacts.length > 1 ? 's' : ''} pre-filled. Tap Send to dispatch the alert.',
+              : 'This will send an emergency SMS to ${_contacts.length} contact${_contacts.length > 1 ? 's' : ''} immediately.',
         ),
         actions: [
           TextButton(
@@ -89,17 +90,30 @@ class _SosScreenState extends State<SosScreen> with TickerProviderStateMixin {
     if (confirmed != true) return;
 
     setState(() => _sending = true);
+
+    // Request SMS permission if on native Android and not yet granted
+    if (!kIsWeb) {
+      final hasPermission = await SosService.hasSmsPermission();
+      if (!hasPermission) {
+        await SosService.requestSmsPermission();
+        // Give user a moment to respond to system dialog, then try
+        await Future.delayed(const Duration(milliseconds: 500));
+      }
+    }
+
     final result = await SosService.sendSos();
     if (!mounted) return;
     setState(() => _sending = false);
 
     switch (result) {
       case SosLaunchResult.success:
-        _showSnack('SMS app opened — tap Send to dispatch alert', Colors.green);
+        _showSnack('Emergency SMS sent to all contacts!', Colors.green);
       case SosLaunchResult.noContacts:
         _showSnack('Add at least one emergency contact first', Colors.orange);
       case SosLaunchResult.appNotFound:
-        _showSnack('Could not open SMS app on this device', Colors.red);
+        _showSnack('Could not send SMS on this device', Colors.red);
+      case SosLaunchResult.permissionDenied:
+        _showSnack('SMS permission denied — please grant it in Settings', Colors.red);
       case SosLaunchResult.notSupported:
         _showSnack('SOS SMS is not supported on this device', Colors.orange);
     }

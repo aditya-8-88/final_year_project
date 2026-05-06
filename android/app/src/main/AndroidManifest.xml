@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- SEND_SMS permission for direct SOS alert sending without opening SMS app -->
+    <uses-permission android:name="android.permission.SEND_SMS"/>
     <application
         android:label="women_safety_app"
         android:name="${applicationName}"

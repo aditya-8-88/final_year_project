@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../config/constants.dart';
@@ -76,26 +77,52 @@ class SosService {
     await prefs.setString(AppConstants.sosMessageKey, message);
   }
 
-  // ── Launch SMS ─────────────────────────────────────────────────────────────
+  // ── Platform channel for direct SMS (native Android) ─────────────────────
+
+  static const _smsChannel = MethodChannel('com.glbitm.women_safety_app/sms');
+
+  /// Check if SEND_SMS permission is granted (native only).
+  static Future<bool> hasSmsPermission() async {
+    if (kIsWeb) return false;
+    try {
+      final granted = await _smsChannel.invokeMethod<bool>('checkSmsPermission');
+      return granted ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Request SEND_SMS permission (native only). Returns true if already granted.
+  static Future<bool> requestSmsPermission() async {
+    if (kIsWeb) return false;
+    try {
+      final result = await _smsChannel.invokeMethod<bool>('requestSmsPermission');
+      return result ?? false;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // ── Send SOS ───────────────────────────────────────────────────────────────
   //
-  // Opens the default SMS app with all emergency contacts pre-filled as
-  // recipients and the SOS message in the body. Works on:
-  //   - Native Android/iOS apps
-  //   - Mobile browsers (PWA on Android/iOS) via sms: URI
-  // The user taps Send once — no SEND_SMS permission required.
+  // On native Android with SEND_SMS permission: sends SMS directly in background
+  // to all emergency contacts — no user interaction needed after tapping SOS.
+  //
+  // On web (mobile browsers): opens sms: URI (user taps Send once).
+  //
+  // Fallback: if permission denied on native, opens SMS app like before.
 
   static Future<SosLaunchResult> sendSos() async {
     final contacts = await getContacts();
     if (contacts.isEmpty) return SosLaunchResult.noContacts;
 
     final message = await getMessage();
-    final numbers = contacts.map((c) => c.phone).join(',');
+    final numbers = contacts.map((c) => c.phone).toList();
 
-    // On web (including mobile browsers), launch the sms: URL directly.
-    // canLaunchUrl is unreliable on web, so we skip it and just launch.
+    // ── Web path: open sms: URI in mobile browser ──
     if (kIsWeb) {
       try {
-        final uri = Uri.parse('sms:$numbers?body=${Uri.encodeComponent(message)}');
+        final uri = Uri.parse('sms:${numbers.join(',')}?body=${Uri.encodeComponent(message)}');
         await launchUrl(uri, mode: LaunchMode.externalApplication);
         return SosLaunchResult.success;
       } catch (_) {
@@ -103,19 +130,39 @@ class SosService {
       }
     }
 
-    // Native app path (Android/iOS)
+    // ── Native path: try direct send via platform channel ──
+    try {
+      final sentCount = await _smsChannel.invokeMethod<int>('sendDirectSms', {
+        'phones': numbers,
+        'message': message,
+      });
+      if (sentCount != null && sentCount > 0) {
+        return SosLaunchResult.success;
+      }
+      return SosLaunchResult.appNotFound;
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {
+        return SosLaunchResult.permissionDenied;
+      }
+      // Fallback: open SMS app
+      return _fallbackOpenSmsApp(numbers.join(','), message);
+    } catch (_) {
+      return _fallbackOpenSmsApp(numbers.join(','), message);
+    }
+  }
+
+  /// Fallback: open SMS app with pre-filled recipients (old behavior).
+  static Future<SosLaunchResult> _fallbackOpenSmsApp(String numbers, String message) async {
     final uri = Uri(
       scheme: 'sms',
       path: numbers,
       queryParameters: {'body': message},
     );
-
     try {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri);
         return SosLaunchResult.success;
       }
-      // Fallback: try smsto: scheme
       final fallback = Uri.parse('smsto:$numbers?body=${Uri.encodeComponent(message)}');
       if (await canLaunchUrl(fallback)) {
         await launchUrl(fallback);
@@ -132,5 +179,6 @@ enum SosLaunchResult {
   success,
   noContacts,
   appNotFound,
+  permissionDenied,
   notSupported,
 }
