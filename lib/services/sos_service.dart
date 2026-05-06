@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../config/constants.dart';
+import 'location_helper.dart' as location;
 
 class SosContact {
   final String id;
@@ -116,7 +117,13 @@ class SosService {
     final contacts = await getContacts();
     if (contacts.isEmpty) return SosLaunchResult.noContacts;
 
-    final message = await getMessage();
+    // Get saved message and try to append live location
+    var message = await getMessage();
+    final locationStr = await location.getLocationString();
+    if (locationStr != null) {
+      message += locationStr;
+    }
+
     final numbers = contacts.map((c) => c.phone).toList();
 
     // ── Web path: open sms: URI in mobile browser ──
