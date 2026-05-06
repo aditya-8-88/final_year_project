@@ -78,22 +78,32 @@ class SosService {
 
   // ── Launch SMS ─────────────────────────────────────────────────────────────
   //
-  // On Android this opens the default SMS app with all emergency contacts
-  // pre-filled as recipients and the SOS message in the body.
+  // Opens the default SMS app with all emergency contacts pre-filled as
+  // recipients and the SOS message in the body. Works on:
+  //   - Native Android/iOS apps
+  //   - Mobile browsers (PWA on Android/iOS) via sms: URI
   // The user taps Send once — no SEND_SMS permission required.
-  //
-  // On web/desktop the method shows a graceful "not supported" result.
 
   static Future<SosLaunchResult> sendSos() async {
-    if (kIsWeb) return SosLaunchResult.notSupported;
-
     final contacts = await getContacts();
     if (contacts.isEmpty) return SosLaunchResult.noContacts;
 
     final message = await getMessage();
-
-    // sms: URI with comma-separated numbers works on Android
     final numbers = contacts.map((c) => c.phone).join(',');
+
+    // On web (including mobile browsers), launch the sms: URL directly.
+    // canLaunchUrl is unreliable on web, so we skip it and just launch.
+    if (kIsWeb) {
+      try {
+        final uri = Uri.parse('sms:$numbers?body=${Uri.encodeComponent(message)}');
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+        return SosLaunchResult.success;
+      } catch (_) {
+        return SosLaunchResult.appNotFound;
+      }
+    }
+
+    // Native app path (Android/iOS)
     final uri = Uri(
       scheme: 'sms',
       path: numbers,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import '../services/sos_service.dart';
 import '../config/constants.dart';
 
@@ -102,7 +101,7 @@ class _SosScreenState extends State<SosScreen> with TickerProviderStateMixin {
       case SosLaunchResult.appNotFound:
         _showSnack('Could not open SMS app on this device', Colors.red);
       case SosLaunchResult.notSupported:
-        _showSnack('SOS SMS is only supported on Android devices', Colors.orange);
+        _showSnack('SOS SMS is not supported on this device', Colors.orange);
     }
   }
 
@@ -284,9 +283,7 @@ class _SosScreenState extends State<SosScreen> with TickerProviderStateMixin {
                             const SizedBox(width: 10),
                             Expanded(
                               child: Text(
-                                kIsWeb
-                                    ? 'SOS SMS works on Android devices only. Install the app on your phone for full functionality.'
-                                    : 'Pressing SOS opens your SMS app with all emergency contacts and your message pre-filled. Tap Send once to alert everyone.',
+                                'Pressing SOS opens your SMS app with all emergency contacts and your message pre-filled. Tap Send once to alert everyone.',
                                 style: theme.textTheme.bodySmall
                                     ?.copyWith(color: Colors.red.shade700),
                               ),
