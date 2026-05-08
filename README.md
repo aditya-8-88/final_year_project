@@ -1,4 +1,4 @@
-# Nagrik — Constitution & Laws for Every Citizen
+# Nagrik - Constitution & Laws for Every Citizen
 
 > An AI-powered Flutter web application that makes Indian law accessible to every citizen through interactive exploration of the Constitution, landmark cases, legal provisions, and an intelligent chat assistant.
 
@@ -8,7 +8,7 @@
 
 **Nagrik** (meaning *Citizen* in Hindi) is a cross-platform legal education platform built with Flutter. It transforms complex constitutional articles, Indian Penal Code sections, landmark Supreme Court judgments, and legal terminology into clear, simple language that any citizen can understand.
 
-The application integrates a GPT-4o-mini powered AI assistant that provides contextual explanations, answers legal queries in structured formats, and supports multi-session conversations — all without requiring any legal background from the user.
+The application integrates a GPT-4o-mini powered AI assistant that provides contextual explanations, answers legal queries in structured formats, and supports multi-session conversations - all without requiring any legal background from the user.
 
 ### Key Highlights
 
@@ -42,10 +42,10 @@ There is a clear need for a **unified, education-first platform** that combines 
 *How can technology bridge the legal awareness gap for Indian citizens who lack access to simplified, reliable, and comprehensive information about their constitutional rights, legal protections, and landmark judicial decisions?*
 
 Specific challenges addressed:
-1. **Complexity barrier** — Legal provisions are written in technical language incomprehensible to non-lawyers
-2. **Fragmentation** — Rights, laws, cases, and amendments are spread across dozens of separate sources
-3. **Lack of context** — Citizens cannot relate abstract legal provisions to real-world situations
-4. **No intelligent guidance** — No existing platform provides AI-powered, context-aware legal explanations specific to Indian law
+1. **Complexity barrier** - Legal provisions are written in technical language incomprehensible to non-lawyers
+2. **Fragmentation** - Rights, laws, cases, and amendments are spread across dozens of separate sources
+3. **Lack of context** - Citizens cannot relate abstract legal provisions to real-world situations
+4. **No intelligent guidance** - No existing platform provides AI-powered, context-aware legal explanations specific to Indian law
 
 ---
 
@@ -55,7 +55,7 @@ Specific challenges addressed:
 2. **Consolidate** the Constitution, Indian Penal Code, landmark Supreme Court cases, and legal glossary into a single platform
 3. **Integrate AI** for contextual, on-demand legal explanations using GPT-4o-mini with domain-specific prompt engineering
 4. **Enable discovery** through smart search that finds relevant content across all data sources using multi-word matching
-5. **Ensure accuracy** by grounding all content in official sources — constitutional references, section numbers, and case citations
+5. **Ensure accuracy** by grounding all content in official sources - constitutional references, section numbers, and case citations
 6. **Build for accessibility** with responsive design, dark mode support, bookmarking, and a clear Material Design 3 interface
 
 ---
@@ -126,10 +126,10 @@ Specific challenges addressed:
 
 The AI assistant uses a structured system prompt with:
 - **Chain-of-thought reasoning** for legal analysis
-- **Structured output format** — 📋 Law, 📖 Reference, 💡 Simple Explanation, 🔑 Hindi Term, ⚠️ Practical Tips
+- **Structured output format** - 📋 Law, 📖 Reference, 💡 Simple Explanation, 🔑 Hindi Term, ⚠️ Practical Tips
 - **Few-shot examples** for consistent response quality
-- **Guard rails** — never fabricates provisions, education-only (not legal advice), 150–250 word target
-- **Contextual FABs** — each detail screen (article, law, case) pre-loads relevant context into the AI chat
+- **Guard rails** - never fabricates provisions, education-only (not legal advice), 150–250 word target
+- **Contextual FABs** - each detail screen (article, law, case) pre-loads relevant context into the AI chat
 
 ### 5.4 Technology Stack
 
@@ -168,42 +168,42 @@ The AI assistant uses a structured system prompt with:
 ### 6.3 Search Effectiveness
 
 The enhanced search system supports:
-- **Multi-word matching** — queries like "land property" match results where both words appear across any fields
-- **Cross-data coverage** — single query searches articles, laws, cases, amendments, and glossary simultaneously
-- **Suggestion chips** — 17 common legal topics for quick access
-- **Categorized results** — results grouped by type with count badges
+- **Multi-word matching** - queries like "land property" match results where both words appear across any fields
+- **Cross-data coverage** - single query searches articles, laws, cases, amendments, and glossary simultaneously
+- **Suggestion chips** - 17 common legal topics for quick access
+- **Categorized results** - results grouped by type with count badges
 
 ### 6.4 User Interface
 
-- **4-tab navigation** — Home, Constitution, Laws, AI Assistant
-- **Responsive design** — adapts from mobile to desktop with NavigationRail
-- **Dark/Light themes** — Material Design 3 with persistent preference
-- **Contextual FABs** — "Ask AI" / "Know More" buttons on every detail page
+- **4-tab navigation** - Home, Constitution, Laws, AI Assistant
+- **Responsive design** - adapts from mobile to desktop with NavigationRail
+- **Dark/Light themes** - Material Design 3 with persistent preference
+- **Contextual FABs** - "Ask AI" / "Know More" buttons on every detail page
 
 ---
 
 ## 7. Impact and Benefits
 
 ### For Citizens
-- **Legal empowerment** — understand rights without needing a lawyer
-- **Instant access** — search any legal topic and get simplified explanations within seconds
-- **Bilingual support** — Hindi terminology alongside English for better comprehension
-- **AI guidance** — ask follow-up questions in natural language and get structured, cited answers
+- **Legal empowerment** - understand rights without needing a lawyer
+- **Instant access** - search any legal topic and get simplified explanations within seconds
+- **Bilingual support** - Hindi terminology alongside English for better comprehension
+- **AI guidance** - ask follow-up questions in natural language and get structured, cited answers
 
 ### For Students and Researchers
-- **Consolidated reference** — Constitution, laws, and cases in one searchable platform
-- **Case law discovery** — 37 landmark cases with significance and year, filterable by 10 categories
-- **Amendment tracking** — understand how the Constitution has evolved over decades
+- **Consolidated reference** - Constitution, laws, and cases in one searchable platform
+- **Case law discovery** - 37 landmark cases with significance and year, filterable by 10 categories
+- **Amendment tracking** - understand how the Constitution has evolved over decades
 
 ### For Legal Awareness
-- **Bridges the knowledge gap** — makes complex legal provisions accessible to non-lawyers
-- **Encourages rights awareness** — citizens who know their rights are better equipped to exercise them
-- **Reliable information** — all content grounded in official sources, not user-generated or unverified
+- **Bridges the knowledge gap** - makes complex legal provisions accessible to non-lawyers
+- **Encourages rights awareness** - citizens who know their rights are better equipped to exercise them
+- **Reliable information** - all content grounded in official sources, not user-generated or unverified
 
 ### Technical Benefits
-- **Cross-platform** — runs on web, Android, iOS, Windows, macOS, and Linux from a single codebase
-- **Offline-capable data** — all content is bundled in the app, no internet needed for browsing
-- **AI only when needed** — internet required only for AI chat; all other features work offline
+- **Cross-platform** - runs on web, Android, iOS, Windows, macOS, and Linux from a single codebase
+- **Offline-capable data** - all content is bundled in the app, no internet needed for browsing
+- **AI only when needed** - internet required only for AI chat; all other features work offline
 
 ---
 
@@ -215,14 +215,14 @@ Nagrik demonstrates that technology can meaningfully bridge the legal awareness 
 
 ### Future Work
 
-1. **Offline AI** — integrate on-device language models for AI explanations without internet
-2. **Voice interaction** — add speech-to-text for querying legal information in regional languages
-3. **Multi-language support** — full Hindi, Tamil, Bengali, and other regional language translations
-4. **Legal document generator** — templates for RTI applications, FIR complaints, and legal notices
-5. **Community features** — moderated Q&A forum for legal discussions with verified answers
-6. **Push notifications** — alerts for new Supreme Court judgments and legislative changes
-7. **Expanded coverage** — add state-specific laws, consumer protection, labour tribunals, and tax laws
-8. **Accessibility** — screen reader support, high contrast mode, and font size controls
+1. **Offline AI** - integrate on-device language models for AI explanations without internet
+2. **Voice interaction** - add speech-to-text for querying legal information in regional languages
+3. **Multi-language support** - full Hindi, Tamil, Bengali, and other regional language translations
+4. **Legal document generator** - templates for RTI applications, FIR complaints, and legal notices
+5. **Community features** - moderated Q&A forum for legal discussions with verified answers
+6. **Push notifications** - alerts for new Supreme Court judgments and legislative changes
+7. **Expanded coverage** - add state-specific laws, consumer protection, labour tribunals, and tax laws
+8. **Accessibility** - screen reader support, high contrast mode, and font size controls
 
 ---
 

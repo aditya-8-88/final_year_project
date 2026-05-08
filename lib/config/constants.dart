@@ -26,6 +26,12 @@ class AppConstants {
   static const String nvidiaApiKeyPref = 'nvidia_api_key';
   static const String githubTokenPref = 'github_token';
 
+  // SOS
+  static const String sosContactsKey = 'sos_contacts';
+  static const String sosMessageKey = 'sos_message';
+  static const String sosDefaultMessage =
+      '🚨 EMERGENCY! I need immediate help. This is an automated SOS alert sent from the Nagrik app. Please contact me or call emergency services on my behalf.';
+
   // System prompt for AI legal assistant - uses chain-of-thought, structured output, few-shot examples
   static const String legalSystemPrompt = '''
 You are "Nagrik AI", a friendly and expert legal education assistant built for Indian citizens. Your purpose is to make Indian law accessible to every person regardless of education level.
